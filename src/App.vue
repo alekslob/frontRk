@@ -7,6 +7,7 @@
         fab
         x-large
         dark
+        @click="get_settings"
         >
           <v-icon>mdi-wrench</v-icon>
       </v-btn>
@@ -20,6 +21,9 @@
         <v-icon>mdi-view-list</v-icon>
     </v-btn>
   </div>
+  <div>
+    {{ info }}
+  </div>
   </v-app>
 </template>
 
@@ -29,9 +33,18 @@ export default {
   name: 'App',
 
   data: () => ({
-    //
+    info: ''
   }),
-};
+  methods:{
+    async get_settings(){
+      const response = await fetch("http://127.0.0.1:8000/config/")
+      const data = await response.json()
+      console.log(data);
+ 
+    }
+  }
+}
+
 </script>
 
 <style>
