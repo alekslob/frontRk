@@ -69,6 +69,12 @@ export default {
   justify-content: center; */
   /* height: 100%; */
 }
+.load{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .no-lic{
   background:gainsboro;
   display: flex;

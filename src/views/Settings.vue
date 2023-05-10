@@ -23,11 +23,8 @@ export default{
         ListForm
     },
     methods:{
-        get_settings(){
-            this.settings.conHost = this.settings.connection.host
-            this.settings.conPort = this.settings.connection.port
-            this.settings.conUser = this.settings.connection.user
-            this.settings.conPassword =this.settings.connection.password
+        get_settings(data){
+            this.settings.connection = data.connection
         }
     },
     async mounted(){

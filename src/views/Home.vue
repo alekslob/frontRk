@@ -20,10 +20,5 @@ export default {
 </script>
 
 <style>
-.load{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
+
 </style>
