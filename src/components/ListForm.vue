@@ -1,14 +1,23 @@
 <template>
-    <v-form >
-        <v-text-field
-        v-model="conHost"
-        :rules="hostRules"
-        label="Адрес для подключения к rk7"
-        required 
-      ></v-text-field>
+    <v-card>
+        <v-container fluid>
+            <v-form >
+                <v-text-field
+                    v-model="conHost"
+                    :rules="hostRules"
+                    label="Адрес для подключения к rk7"
+                    required 
+                ></v-text-field>
+                <v-text-field
+                    v-model="conPort"
+                    :rules="portRules"
+                    label="Порт для подключения к rk7"
+                    required 
+                ></v-text-field>
 
-    </v-form>
-
+            </v-form>
+        </v-container>
+    </v-card>
 </template>
 
 <script>
@@ -21,6 +30,9 @@ export default{
         hostRules: [
             v => (v && v.length <= 15) || '*.*.*.*',
         ],
+        portRules: [
+            v => (v && v.length <= 65000) || '-----',
+        ]
     }),
     props:{
         settings:{}
