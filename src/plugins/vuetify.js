@@ -7,9 +7,9 @@ export default new Vuetify({
     theme: {
         themes: {
           light: {
-            background: colors.blueGrey.darken1,
-            settings_btn: colors.teal.lighten1,
-            orders_btn: colors.red.lighten3
+            background: colors.blueGrey.lighten3,
+            settings_btn: colors.blueGrey.lighten3,
+            orders_btn: colors.blueGrey.lighten3
           },
         },
       },

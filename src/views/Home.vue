@@ -1,13 +1,29 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-
+  <div class="load">
+    <Loading v-if="$store.state.loading"/>
+    <div v-else>
+      <NoLicense v-if="!$store.state.isValid"/>
+    </div>
   </div>
 </template>
 
 <script>
-
+import Loading from '../components/Loading.vue';
+import NoLicense from '../components/NoLicense.vue';
 export default {
-  name: 'Home',
+    name: "Home",
+    components: { 
+      Loading,
+      NoLicense
+    }
 }
 </script>
+
+<style>
+.load{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+</style>
