@@ -2,23 +2,67 @@
     <div v-if="loading" class="load">
         <Loading />
     </div>
+    <div v-else>
+        <div v-if="showList" class="d-flex flex-wrap bg-surface-variant" >
+            <Order  v-for="(ord,idx) in orders" :key="idx" :order="ord" />
+        </div>
+        <v-snackbar
+            v-model="showMes"
+            :timeout="2000"
+            attach
+            position="absolute"
+            top
+            right
+        >
+            {{message}}
+        </v-snackbar>
+    </div>
 </template>
 
 <script>
 import Loading from '../components/Loading.vue';
+import Order from '../components/Order.vue';
 export default{
     name:'ListOrders',
     data:()=>({
-        loading: true
+        loading: true,
+        showMes: false,
+        showList: true,
+        message: '',
+        orders:[]
     }),
     components:{
-        Loading
+        Loading,
+        Order
+    },
+    methods:{
+        get_list(data){
+            var i = 1
+            data.forEach(e => {
+                const d = {nOrder: i, 
+                    table:e.table.name,
+                    sum: e.unpaid_sum
+                }
+                this.orders.push(d)
+                i++
+            });
+        }
     },
     async mounted(){
-        const response = await fetch("http://127.0.0.1:8000/order_list");
-        const data = await response.json();
-        if(data!=undefined) this.loading=false
-        console.log(data);
+        try{
+            const response = await fetch("/order_list");
+            const data = await response.json();
+            this.loading=false
+            if(response.status!=200) throw new Error(data.error_text)
+            this.get_list(data)
+            
+            
+        }
+        catch (err){
+            this.message = err.message
+            this.showList= false
+            this.showMes = true
+        }
     }
 }
 </script>

@@ -5,7 +5,7 @@
         <router-link to="/listOrders">
           <v-btn class="mx-2"
             depressed
-            color="orders_btn"
+
             x-large
             dark
             >
@@ -15,7 +15,7 @@
           <router-link to="/settings">
             <v-btn class="mx-2"
               depressed
-              color="settings_btn"
+
               x-large
               dark
               ><v-icon>mdi-wrench</v-icon>
@@ -24,13 +24,11 @@
         </div>
       </div>
     </div>
-  <router-view/>
+  <router-view />
   </v-app>
 </template>
 
 <script>
-// import router from './router';
-
 
 export default {
     name: "App",
@@ -41,20 +39,13 @@ export default {
       isF2: false,
       licInfo: undefined
     }),
-    methods: {
-        async get_orders(){
-            // const response = await fetch("http://127.0.0.1:8000/order_list");
-            // const data = await response.json();
-            // console.log(data);
-        }
-    },
-    // components: { router }
+
     async mounted(){
-          const response = await fetch("http://127.0.0.1:8000/license");
+          const response = await fetch("/license");
           const data = await response.json()
-          console.log(data)
-          if (data!=undefined) this.$store.commit('noload')
           this.$store.commit('set_licInfo', data)
+          this.$store.commit('noload')
+          
 
     }
 }
@@ -63,11 +54,8 @@ export default {
 
 <style>
 .main{
-  background:gainsboro;
   display: flex;
-  /* align-items: center;
-  justify-content: center; */
-  /* height: 100%; */
+  justify-content: center;
 }
 .load{
   display: flex;
