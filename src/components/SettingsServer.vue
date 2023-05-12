@@ -1,5 +1,6 @@
 <template>
-    <v-card class="mx-auto">
+    <v-card class="ma-2"
+    min-width="500px">
         <v-toolbar flat>
             <v-btn
                 icon
@@ -10,11 +11,11 @@
                 <v-icon v-else>mdi-chevron-down</v-icon>
             </v-btn> 
             <v-toolbar-title class="font-weight-light">
-                Настройки подключения к серверу
+                Подключение к серверу
             </v-toolbar-title>
             <v-spacer></v-spacer>
   
-            <v-btn v-if="$store.state.isF2 && show" icon @click="isEditing = !isEditing">
+            <v-btn v-if="$store.state.isF2 && show" icon @click="editing">
                 <v-fade-transition leave-absolute>
                     <v-icon v-if="isEditing">mdi-close</v-icon>
                     <v-icon v-else>mdi-pencil</v-icon>
@@ -24,19 +25,21 @@
         </v-toolbar>
 
         <v-card-text v-if="show">
-            <v-text-field
+            <v-text-field ref="hostValid"
                 v-model="server.host"
                 :disabled="!isEditing"
                 :rules="hostRules"
                 color="grey"
                 label="Адрес"
+                hint="Изменения вступят в силу после перезагрузки сервера"
             ></v-text-field>
-            <v-text-field
+            <v-text-field ref="portValid"
                 v-model="server.port"
                 :disabled="!isEditing"
                 :rules="portRules"
                 color="grey"
                 label="Порт"
+                hint="Изменения вступят в силу после перезагрузки сервера"
                 required 
             ></v-text-field>
             
@@ -60,24 +63,37 @@ export default{
     data:()=>({
         show: false,
         isEditing: false,
-
+        host: '',
+        port: '',
         hostRules: [
-            v => (v && v.length <= 15) || '*.*.*.*',
+            (v) => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(v) || 'блаблабла',
         ],
         portRules: [
-            v => (v && v <= 65000) || '-----',
+            v => (v && v <= 65000) || '',
         ],
     }),
     methods:{
         save () {
-            this.$emit('save', {local_serv: this.server})
-            this.isEditing = !this.isEditing
-            this.hasSaved = true
+            if(this.$refs.hostValid.validate() && this.$refs.portValid.validate()){
+                this.$emit('save', {local_serv: this.server})
+                this.isEditing = !this.isEditing
+                this.hasSaved = true
+            }
         },
+        editing(){
+            this.isEditing = !this.isEditing
+            if(!this.isEditing){
+                this.server.host = this.host
+                this.server.port = this.port
+            }
+        }
     },
     props:{
         server:{},
     },
-
+    mounted(){
+        this.host = this.server.host
+        this.port = this.server.port
+    }
 }
 </script>

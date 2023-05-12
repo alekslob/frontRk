@@ -6,21 +6,13 @@
         <div v-if="showList" class="d-flex flex-wrap bg-surface-variant" >
             <Order  v-for="(ord,idx) in orders" :key="idx" :order="ord" />
         </div>
-        <v-snackbar
-            v-model="showMes"
-            :timeout="2000"
-            attach
-            position="absolute"
-            top
-            right
-        >
-            {{message}}
-        </v-snackbar>
+        <Message v-if="showMes" :message="message"/>
     </div>
 </template>
 
 <script>
 import Loading from '../components/Loading.vue';
+import Message from '../components/Message.vue';
 import Order from '../components/Order.vue';
 export default{
     name:'ListOrders',
@@ -33,6 +25,7 @@ export default{
     }),
     components:{
         Loading,
+        Message,
         Order
     },
     methods:{

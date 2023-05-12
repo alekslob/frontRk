@@ -1,18 +1,15 @@
 <template>
   <v-app >
-    <div v-if="!$store.state.loading">
-      <div v-if="$store.state.isValid" class="main">
+    <v-app-bar v-if="!$store.state.loading && $store.state.isValid" elevation="6" app>
+        <v-spacer></v-spacer>
         <router-link to="/listOrders">
           <v-btn class="mx-2"
-            depressed
-
             x-large
             dark
             >
             <v-icon>mdi-view-list</v-icon>
           </v-btn></router-link>
-        <div v-if="$store.state.isF1">
-          <router-link to="/settings">
+          <router-link v-if="$store.state.isF1" to="/settings">
             <v-btn class="mx-2"
               depressed
 
@@ -21,15 +18,17 @@
               ><v-icon>mdi-wrench</v-icon>
               </v-btn>
             </router-link>
-        </div>
-      </div>
-    </div>
-  <router-view />
+        <v-spacer></v-spacer>
+    </v-app-bar>
+    <v-main class="justify-center"> 
+      <router-view />
+    </v-main>
+  
   </v-app>
 </template>
 
 <script>
-
+// import Message from './components/Message.vue';
 export default {
     name: "App",
     data: () => ({
@@ -39,15 +38,7 @@ export default {
       isF2: false,
       licInfo: undefined
     }),
-
-    async mounted(){
-          const response = await fetch("/license");
-          const data = await response.json()
-          this.$store.commit('set_licInfo', data)
-          this.$store.commit('noload')
-          
-
-    }
+    
 }
 
 </script>

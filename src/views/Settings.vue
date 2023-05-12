@@ -2,25 +2,17 @@
     <div v-if="loading" class="load">
         <Loading />
     </div>
-    <div v-else class="mx-auto" >
+    <div v-else class="d-flex flex-column align-center " >
         
-        <SettingsRk7 v-if="showList" :connection="connection" @save="(e)=>send_settings(e)" />
+        <SettingsRk7  v-if="showList" :connection="connection" @save="(e)=>send_settings(e)" />
         <SettingsLogs v-if="showList" :logs="logs" @save="(e)=>send_settings(e)"/>
         <SettingsServer v-if="showList" :server="server" @save="(e)=>send_settings(e)"/>
-        <v-snackbar
-            v-model="showMes"
-            :timeout="2000"
-            attach
-            position="absolute"
-            top
-            right
-        >
-            {{message}}
-        </v-snackbar>
+        <Message v-if="showMes" :message="message"/>
     </div>
 </template>
 <script>
 import Loading from '../components/Loading.vue';
+import Message from '../components/Message.vue';
 import SettingsRk7 from '../components/SettingsRk7.vue';
 import SettingsLogs from '../components/SettingsLogs.vue';
 import SettingsServer from '../components/SettingsServer.vue';
@@ -39,6 +31,7 @@ export default{
     }),
     components:{
         Loading,
+        Message,
         SettingsRk7,
         SettingsLogs,
         SettingsServer,
@@ -51,6 +44,7 @@ export default{
         },
         async send_settings(data){
             try{
+                this.showMes = false
                 const response = await fetch("/config/",{
                     method: "post",
                     headers: {
@@ -68,6 +62,7 @@ export default{
                 this.message = err.message
                 this.showMes = true
             }
+            
         }
 
     },
