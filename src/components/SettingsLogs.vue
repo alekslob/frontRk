@@ -1,5 +1,5 @@
 <template>
-    <v-card class="mx-auto" min-width="500px">
+    <v-card class="mx-auto ma-2" min-width="500px">
         <v-toolbar flat>
             <v-btn
                 icon

@@ -20,7 +20,7 @@ export default new Vuex.Store({
       state.date = licInfo.expire_date
       state.isValid = licInfo.valid
       state.isF1 = licInfo.features.find(e => e.id==1) != undefined
-      state.isF2 = licInfo.features.find(e => e.id==1) != undefined
+      state.isF2 = licInfo.features.find(e => e.id==2) != undefined
     }
   },
   actions: {

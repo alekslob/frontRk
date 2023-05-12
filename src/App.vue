@@ -23,21 +23,41 @@
     <v-main class="justify-center"> 
       <router-view />
     </v-main>
-  
+    <Message v-if="showMes" :message="message"/>
   </v-app>
 </template>
 
 <script>
-// import Message from './components/Message.vue';
+import Message from './components/Message.vue';
 export default {
     name: "App",
     data: () => ({
-      loading: true,
-      isValid: false,
-      isF1: false,
-      isF2: false,
-      licInfo: undefined
+      message: '',
+      showMes: false
     }),
+    components:{
+      Message
+    },
+    async mounted(){
+        try{
+          this.showMes = false
+          const response = await fetch("/license");
+          
+          if(response.status!=200) {
+              const mess = await response.text()
+              throw new Error(mess)
+          }
+          const data = await response.json()
+          this.$store.commit('noload')
+          // if(response.status!=200) throw new Error(data.error_text)
+          this.$store.commit('set_licInfo', data)
+        }
+        catch(err){
+          console.log(err)
+          this.message = err.message
+          this.showMes = true
+        }
+    }
     
 }
 
