@@ -1,6 +1,6 @@
 <template>
     <div>
-    <v-app-bar v-if="!$store.state.loading && $store.state.isF1" elevation="6" app>
+    <v-app-bar v-if="!$store.state.loading && $store.state.viewConfig" elevation="6" app>
         <v-spacer></v-spacer>
         <router-link to="/">
           <v-btn class="mx-2"

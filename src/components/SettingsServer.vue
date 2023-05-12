@@ -15,7 +15,7 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
   
-            <v-btn v-if="$store.state.isF2 && show" icon @click="editing">
+            <v-btn v-if="$store.state.changeConfig && show" icon @click="editing">
                 <v-fade-transition leave-absolute>
                     <v-icon v-if="isEditing">mdi-close</v-icon>
                     <v-icon v-else>mdi-pencil</v-icon>
@@ -45,7 +45,7 @@
             
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions v-if="$store.state.isF2 && show">
+        <v-card-actions v-if="$store.state.changeConfig && show">
             <v-spacer></v-spacer>
             <v-btn
             :disabled="!isEditing"

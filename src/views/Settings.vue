@@ -10,6 +10,7 @@
         <Message v-if="showMes" :message="message"/>
     </div>
 </template>
+
 <script>
 import Loading from '../components/Loading.vue';
 import Message from '../components/Message.vue';

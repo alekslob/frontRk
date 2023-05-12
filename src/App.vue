@@ -1,32 +1,33 @@
 <template>
   <v-app >
-    <Loading v-if="$store.state.loading" />
-    <component v-else :is="layout" />
+    <component :is="layout" />
     <Message v-if="showMes" :message="message"/>
   </v-app>
 </template>
 
 <script>
-import Loading from './components/Loading.vue';
+
 import Message from './components/Message.vue';
-import Home from './layout/Home.vue'
-import IsValid from './layout/IsValid.vue';
+import NoLicLayout from './layout/NoLicLayout.vue';
+import MainLayout from './layout/MainLayout.vue'
+import LoadLayout from './layout/LoadLayout.vue';
 
 export default {
     name: "App",
     data: () => ({
+      loading: true,
       message: '',
       showMes: false
     }),
     components:{
-      Loading,
+      LoadLayout,
       Message,
-      Home,
-      IsValid
+      NoLicLayout,
+      MainLayout
     },
     computed:{
         layout() {
-          return this.$store.state.isValid ? 'IsValid': 'Home'
+          return this.loading ? 'LoadLayout' : this.$store.state.isValid ? 'MainLayout': 'NoLicLayout'
         }
     },
     async mounted(){
@@ -39,8 +40,7 @@ export default {
               throw new Error(mess)
           }
           const data = await response.json()
-          this.$store.commit('noload')
-          // if(response.status!=200) throw new Error(data.error_text)
+          this.loading = false
           this.$store.commit('set_licInfo', data)
         }
         catch(err){

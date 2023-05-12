@@ -15,7 +15,7 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
   
-            <v-btn v-if="$store.state.isF2 && show" icon @click="editing">
+            <v-btn v-if="$store.state.changeConfig && show" icon @click="editing">
                 <v-fade-transition leave-absolute>
                     <v-icon v-if="isEditing">mdi-close</v-icon>
                     <v-icon v-else>mdi-pencil</v-icon>
@@ -24,39 +24,12 @@
         </v-toolbar>
 
         <v-card-text  v-if="show">
-            <v-text-field ref="hostValid"
-                v-model="connection.host"
-                :disabled="!isEditing"
-                :rules="hostRules"
-                color="grey"
-                label="Адрес"
-                hint="Изменения вступят в силу после перезагрузки сервера"
-            ></v-text-field>
-            <v-text-field ref="portValid"
-                v-model="connection.port"
-                :disabled="!isEditing"
-                :rules="portRules"
-                color="grey"
-                label="Порт"
-                required 
-            ></v-text-field>
-            <v-text-field
-                v-model="connection.user"
-                :rules="userRules"
-                :disabled="!isEditing"
-                label="Имя пользователя"
-                required 
-            ></v-text-field>
-            <v-text-field
-                v-model="connection.password"
-                :rules="passwordRules"
-                :disabled="!isEditing"
-                label="Пароль"
-                required 
-            ></v-text-field>
+            <InputField v-for="(item,idx) in listParams" :key="idx"
+                :params="item" :isEditing="isEditing"/>
+            
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions v-if="$store.state.isF2 && show">
+        <v-card-actions v-if="$store.state.changeConfig && show">
             <v-spacer></v-spacer>
             <v-btn
             :disabled="!isEditing"
@@ -69,6 +42,8 @@
 </template>
 
 <script>
+import InputField from './InputField.vue'
+
 export default{
     data:()=>({
         show: false,
@@ -89,22 +64,25 @@ export default{
         passwordRules: [
             v => (v && v.length <= 60) || '',
         ],
+        listParams:[]
     }),
+    components:{
+        InputField
+    },
     methods:{
         save () {
-            if(this.$refs.hostValid.validate() && this.$refs.portValid.validate()){
-                this.$emit('save', {connection: this.connection})
-                this.isEditing = !this.isEditing
-                this.hasSaved = true
-            }
+            this.connection.host = this.listParams[0].value
+            console.log(this.listParams[0].rules[0](this.connection.host))
+            // if(this.$refs.hostValid.validate() && this.$refs.portValid.validate()){
+            //     this.$emit('save', {connection: this.connection})
+            //     this.isEditing = !this.isEditing
+            //     this.hasSaved = true
+            // }
         },
         editing(){
             this.isEditing = !this.isEditing
             if (!this.isEditing){
-                this.connection.host = this.host
-                this.connection.port = this.port
-                this.connection.user = this.user
-                this.connection.password = this.password
+                this.listParams[0].value = this.connection.host
             }
         }
     },
@@ -113,10 +91,31 @@ export default{
     },
 
     mounted(){
-        this.host = this.connection.host
-        this.port = this.connection.port
-        this.user = this.connection.user
-        this.password = this.connection.password
+        this.listParams.push({
+                name:'Адрес',
+                value: this.connection.host,
+                rules: this.hostRules,
+                hint: 'Изменения вступят в силу после перезагрузки сервера'
+            })
+            // {
+            //     name:'Имя пользователя',
+            //     value: '',
+            //     rules: this.userRules,
+            //     isEditing: this.isEditing
+            // },
+            // {
+            //     name:'Имя пользователя',
+            //     value: '',
+            //     rules: this.userRules,
+            //     isEditing: this.isEditing
+            // },
+            // {
+            //     name:'Пароль',
+            //     value: '',
+            //     rules: this.passwordRules,
+            //     isEditing: this.isEditing
+            // }
+
     }
 }
 </script>
