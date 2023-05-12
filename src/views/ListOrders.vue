@@ -43,7 +43,7 @@ export default{
         try{
             const response = await fetch("/order_list");
             const data = await response.json();
-            // this.loading=false
+            this.loading=false
             if(response.status!=200) throw new Error(data.error_text)
             this.get_list(data)
             
