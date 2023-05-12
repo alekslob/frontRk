@@ -61,9 +61,9 @@ export default {
 }
 .load{
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  height: 100%;
+  /* height: 100%; */
 }
 .no-lic{
   background:gainsboro;
