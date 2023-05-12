@@ -1,7 +1,5 @@
 <template>
-    <div v-if="loading" class="load">
-        <Loading />
-    </div>
+    <Loading v-if="loading"/>
     <div v-else>
         <div v-if="showList" class="d-flex flex-wrap bg-surface-variant" >
             <Order  v-for="(ord,idx) in orders" :key="idx" :order="ord" />
@@ -45,7 +43,7 @@ export default{
         try{
             const response = await fetch("/order_list");
             const data = await response.json();
-            this.loading=false
+            // this.loading=false
             if(response.status!=200) throw new Error(data.error_text)
             this.get_list(data)
             
