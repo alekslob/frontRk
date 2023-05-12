@@ -2,7 +2,7 @@
     <div>
     <v-app-bar v-if="!$store.state.loading && $store.state.isValid" elevation="6" app>
         <v-spacer></v-spacer>
-        <router-link to="/listOrders">
+        <router-link to="/">
           <v-btn class="mx-2"
             x-large
             dark

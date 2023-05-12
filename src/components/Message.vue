@@ -1,14 +1,14 @@
 <template>
     <v-snackbar
-            v-model="showMes"
-            :timeout="2000"
-            attach
-            position="absolute"
-            top
-            right
-        >
-            {{message}}
-        </v-snackbar>
+        v-model="showMes"
+        :timeout="2000"
+        attach
+        position="absolute"
+        top
+        right
+    >
+        {{message}}
+    </v-snackbar>
 </template>
 
 <script>

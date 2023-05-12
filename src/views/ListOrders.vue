@@ -1,5 +1,7 @@
 <template>
-    <Loading v-if="loading"/>
+    <div v-if="loading" class="load">
+        <Loading />
+    </div>
     <div v-else>
         <div v-if="showList" class="d-flex flex-wrap bg-surface-variant" >
             <Order  v-for="(ord,idx) in orders" :key="idx" :order="ord" />
