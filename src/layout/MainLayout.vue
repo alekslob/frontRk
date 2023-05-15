@@ -9,7 +9,7 @@
             >
             <v-icon>mdi-view-list</v-icon>
           </v-btn></router-link>
-          <router-link to="/settings">
+          <router-link to="/config">
             <v-btn class="mx-2"
               depressed
 

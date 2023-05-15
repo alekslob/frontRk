@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import settings from './settings'
 
 Vue.use(Vuex)
 
@@ -11,7 +12,7 @@ export default new Vuex.Store({
         changeConfig: false,
         showMess: false,
         message: '',
-        config: {}
+        config: []
     },
     mutations: {
         set_licInfo (state, licInfo){ 
@@ -20,8 +21,11 @@ export default new Vuex.Store({
             state.viewConfig = licInfo.features.find(e => e.id==1) != undefined
             state.changeConfig = licInfo.features.find(e => e.id==1) != undefined
         },
-        set_config(state, config){
-            state.config = config
+        set_config(ctx, config){
+            
+            state.config.push({title: "Подключение к rk7", settings: config.connection})
+            // state.config.push({title: "Логирование", settings: config.log}) 
+            // state.config.push({title: "Подключение к серверу", settings: config.local_serv}) 
         },
         set_message(state, message){
             state.message = message
@@ -45,20 +49,7 @@ export default new Vuex.Store({
               throw err
           }
       },
-      async getConfig(ctx){
-          try{
-              ctx.state.showMess = false
-              const response = await fetch("/config");
-              const data = await response.json();
-              if(response.status!=200) throw new Error(data.error_text)
-
-              ctx.commit('set_config', data)
-              
-          }
-          catch (err){
-              ctx.commit('set_message', err.message)
-          }
-      },
+      
       async sendConfig(ctx){
           try{
               const response = await fetch("/config/",{
@@ -78,5 +69,6 @@ export default new Vuex.Store({
       }
   },
   modules: {
+    settings
   }
 })

@@ -1,11 +1,13 @@
 <template>
-    <v-progress-circular
-      :size="50"
-      indeterminate
-    ></v-progress-circular>
+    <LoadView/>
 </template>
 
 <script>
-export default{}
+import LoadView from '../views/LoadView.vue';
+export default{
+  components:{
+    LoadView
+  }
+}
 </script>
 
