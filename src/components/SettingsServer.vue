@@ -25,23 +25,9 @@
         </v-toolbar>
 
         <v-card-text v-if="show">
-            <v-text-field ref="hostValid"
-                v-model="server.host"
-                :disabled="!isEditing"
-                :rules="hostRules"
-                color="grey"
-                label="Адрес"
-                hint="Изменения вступят в силу после перезагрузки сервера"
-            ></v-text-field>
-            <v-text-field ref="portValid"
-                v-model="server.port"
-                :disabled="!isEditing"
-                :rules="portRules"
-                color="grey"
-                label="Порт"
-                hint="Изменения вступят в силу после перезагрузки сервера"
-                required 
-            ></v-text-field>
+            <InputField :params="listParams.host" :isEditing="isEditing"/>
+            <InputField :params="listParams.port" :isEditing="isEditing"/>
+            
             
         </v-card-text>
         <v-divider></v-divider>
@@ -59,12 +45,15 @@
 </template>
 
 <script>
+import InputField from './InputField.vue'
+
 export default{
     data:()=>({
         show: false,
         isEditing: false,
-        host: '',
-        port: '',
+        listParams: {},
+        // host: '',
+        // port: '',
         hostRules: [
             (v) => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(v) || 'блаблабла',
         ],
@@ -74,7 +63,11 @@ export default{
     }),
     methods:{
         save () {
-            if(this.$refs.hostValid.validate() && this.$refs.portValid.validate()){
+            if(this.listParams.host.rules[0](this.listParams.host.value)==true &&
+                this.listParams.port.rules[0](this.listParams.port.value)==true){
+                this.server.host = this.listParams.host.value
+                this.server.port = this.listParams.port.value
+                
                 this.$emit('save', {local_serv: this.server})
                 this.isEditing = !this.isEditing
                 this.hasSaved = true
@@ -82,9 +75,23 @@ export default{
         },
         editing(){
             this.isEditing = !this.isEditing
-            if(!this.isEditing){
-                this.server.host = this.host
-                this.server.port = this.port
+            // if(!this.isEditing){
+            //     this.server.host = this.host
+            //     this.server.port = this.port
+            // }
+        },
+        setParams(){
+            this.listParams.host = {
+                name:'Адрес',
+                value: this.server.host,
+                rules: this.hostRules,
+                hint: 'Изменения вступят в силу после перезагрузки сервера'
+            }
+        this.listParams.port = {
+                name:'Порт',
+                value: this.server.port,
+                rules: this.portRules,
+                hint: 'Изменения вступят в силу после перезагрузки сервера'
             }
         }
     },
@@ -92,8 +99,10 @@ export default{
         server:{},
     },
     mounted(){
-        this.host = this.server.host
-        this.port = this.server.port
+        this.setParams()
+    },
+    components:{
+        InputField
     }
 }
 </script>

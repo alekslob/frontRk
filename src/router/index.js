@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Settings from '../views/Settings.vue'
+// import Settings from '../views/Settings.vue'
 import ListOrders from '../views/ListOrders.vue'
 Vue.use(VueRouter)
 
@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/settings',
     name: 'Settings',
-    component: Settings
+    component: () => import(/* webpackChunkName: "about" */ '../views/Settings.vue')
   },
   {
     path: '/',

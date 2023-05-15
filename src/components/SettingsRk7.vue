@@ -24,9 +24,10 @@
         </v-toolbar>
 
         <v-card-text  v-if="show">
-            <InputField v-for="(item,idx) in listParams" :key="idx"
-                :params="item" :isEditing="isEditing"/>
-            
+            <InputField :params="listParams.host" :isEditing="isEditing"/>
+            <InputField :params="listParams.port" :isEditing="isEditing"/>
+            <InputField :params="listParams.user" :isEditing="isEditing"/>
+            <InputField :params="listParams.password" :isEditing="isEditing"/>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions v-if="$store.state.changeConfig && show">
@@ -48,10 +49,10 @@ export default{
     data:()=>({
         show: false,
         isEditing: false,
-        host: '',
-        port: '',
-        user: '',
-        password: '',
+        // host: '',
+        // port: '',
+        // user: '',
+        // password: '',
         hostRules: [
             (v) => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(v) || 'блаблабла',
         ],
@@ -59,31 +60,57 @@ export default{
             v => (v && v <= 65000) || '-----',
         ],
         userRules: [
-            v => (v && v.length <= 60) || '',
+            // v => (v && v.length <= 60) || '',
         ],
         passwordRules: [
-            v => (v && v.length <= 60) || '',
+            // v => (v && v.length <= 60) || '',
         ],
-        listParams:[]
+        listParams:{}
     }),
     components:{
         InputField
     },
     methods:{
         save () {
-            this.connection.host = this.listParams[0].value
-            console.log(this.listParams[0].rules[0](this.connection.host))
-            // if(this.$refs.hostValid.validate() && this.$refs.portValid.validate()){
-            //     this.$emit('save', {connection: this.connection})
-            //     this.isEditing = !this.isEditing
-            //     this.hasSaved = true
-            // }
+            if(this.listParams.host.rules[0](this.listParams.host.value)==true &&
+                this.listParams.port.rules[0](this.listParams.port.value)==true){
+                this.connection.host = this.listParams.host.value
+                this.connection.port = this.listParams.port.value
+                this.connection.user = this.listParams.user.value
+                this.connection.password = this.listParams.password.value
+                this.$emit('save', {connection: this.connection})
+                this.isEditing = !this.isEditing
+                this.hasSaved = true
+            }
+        },
+        setParams(){
+            this.listParams.host = {
+                name:'Адрес',
+                value: this.connection.host,
+                rules: this.hostRules,
+                hint: 'Изменения вступят в силу после перезагрузки сервера'
+            }
+        this.listParams.port = {
+                name:'Порт',
+                value: this.connection.port,
+                rules: this.portRules,
+            }
+        this.listParams.user = {
+                name:'Имя пользователя',
+                value: this.connection.user,
+                rules: this.userRules,
+            }
+        this.listParams.password = {
+                name:'Пароль',
+                value: this.connection.password,
+                rules: this.passwordRules,
+            }
         },
         editing(){
             this.isEditing = !this.isEditing
-            if (!this.isEditing){
-                this.listParams[0].value = this.connection.host
-            }
+            // if (!this.isEditing){
+            //     this.setParams()
+            // }
         }
     },
     props:{
@@ -91,31 +118,7 @@ export default{
     },
 
     mounted(){
-        this.listParams.push({
-                name:'Адрес',
-                value: this.connection.host,
-                rules: this.hostRules,
-                hint: 'Изменения вступят в силу после перезагрузки сервера'
-            })
-            // {
-            //     name:'Имя пользователя',
-            //     value: '',
-            //     rules: this.userRules,
-            //     isEditing: this.isEditing
-            // },
-            // {
-            //     name:'Имя пользователя',
-            //     value: '',
-            //     rules: this.userRules,
-            //     isEditing: this.isEditing
-            // },
-            // {
-            //     name:'Пароль',
-            //     value: '',
-            //     rules: this.passwordRules,
-            //     isEditing: this.isEditing
-            // }
-
+        this.setParams()
     }
 }
 </script>

@@ -23,21 +23,8 @@
         </v-toolbar>
 
         <v-card-text v-if="show">
-            <v-text-field ref="levelValid"
-                v-model="logs.level"
-                :disabled="!isEditing"
-                :rules="levelRules"
-                color="grey"
-                label="Уровень логирования"
-            ></v-text-field>
-            <v-text-field ref="daysValid"
-                v-model="logs.retention_days"
-                :disabled="!isEditing"
-                :rules="daysRules"
-                color="grey"
-                label="Количество дней"
-                required 
-            ></v-text-field>
+            <InputField :params="listParams.level" :isEditing="isEditing"/>
+            <InputField :params="listParams.days" :isEditing="isEditing"/>
             
         </v-card-text>
         <v-divider></v-divider>
@@ -54,12 +41,15 @@
 </template>
 
 <script>
+import InputField from './InputField.vue'
+
 export default{
     data:()=>({
         show: false,
         isEditing: false,
-        level:'',
-        days: '',
+        listParams: {},
+        // level:'',
+        // days: '',
         levelRules: [
             v => (v && v <= 10) || '',
         ],
@@ -69,18 +59,32 @@ export default{
     }),
     methods:{
         save () {
-            if(this.$refs.levelValid.validate() && this.$refs.daysValid.validate()){
-                this.$emit('save', {log: this.logs})
-                this.isEditing = !this.isEditing
-                this.hasSaved = true
+            if(this.listParams.level.rules[0](this.listParams.level.value) == true &&
+                this.listParams.days.rules[0](this.listParams.days.value) == true){
+                    this.logs.level = this.listParams.level.value
+                    this.logs.retention_days = this.listParams.days.value
+                    this.$emit('save', {log: this.logs})
+                    this.isEditing = !this.isEditing
+                    this.hasSaved = true
             }
             
         },
         editing(){
             this.isEditing = !this.isEditing
-            if(!this.isEditing){
-                this.logs.level = this.level,
-                this.logs.retention_days = this.days 
+            // if(!this.isEditing){
+            //     this.setParams() 
+            // }
+        },
+        setParams(){
+            this.listParams.level = {
+                name: 'Уровень логирования',
+                value: this.logs.level,
+                rules: this.levelRules,
+            }
+            this.listParams.days = {
+                name: 'Количество дней',
+                value: this.logs.retention_days,
+                rules: this.daysRules
             }
         }
     },
@@ -88,8 +92,10 @@ export default{
         logs:{},
     },
     mounted(){
-        this.level = this.logs.level,
-        this.days = this.logs.retention_days
+       this.setParams()
+    },
+    components:{
+        InputField
     }
 }
 </script>
