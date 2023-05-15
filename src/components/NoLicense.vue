@@ -5,7 +5,7 @@
         </v-card-title>
         <v-card-text class="text--primary">
                 Ничего не доступно потому что нет лицензии.<br><br>
-                Дата окончания: {{ $store.state.date }}
+                Дата окончания: {{ $store.getters.getLicenseDate }}
 
         </v-card-text>
     </v-card>

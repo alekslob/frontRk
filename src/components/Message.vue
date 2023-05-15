@@ -22,7 +22,6 @@ export default{
         }
     },
     mounted(){
-        console.log('всплывающее сообщение')
         this.showMes=true
     }
 }

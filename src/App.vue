@@ -1,7 +1,7 @@
 <template>
   <v-app >
     <component :is="layout" />
-    <Message v-if="$store.state.showMess" :message="$store.state.message"/>
+    <Message v-if="$store.getters.getViewMessage" :message="$store.getters.getMessage"/>
   </v-app>
 </template>
 
@@ -16,8 +16,8 @@ export default {
     name: "App",
     data: () => ({
       loading: true,
-      message: '',
-      showMes: false
+      // message: '',
+      // showMes: false
     }),
     components:{
       LoadLayout,
@@ -27,12 +27,14 @@ export default {
     },
     computed:{
         layout() {
-          return this.loading ? 'LoadLayout' : this.$store.state.isValid ? 'MainLayout': 'NoLicLayout'
+          
+          return this.loading ? 'LoadLayout' : this.$store.getters.getLicenseValid ? 'MainLayout': 'NoLicLayout'
         }
     },
     async mounted(){
         try{
             await this.$store.dispatch('getLicenseInfo')
+            console.log(this.$store.getters.getLicenseValid)
             this.loading = false
         }
         catch (err){
