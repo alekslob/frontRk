@@ -7,13 +7,13 @@
         <SettingsRk7  v-if="showList" :connection="connection" @save="(e)=>send_settings(e)" />
         <SettingsLogs v-if="showList" :logs="logs" @save="(e)=>send_settings(e)"/>
         <SettingsServer v-if="showList" :server="server" @save="(e)=>send_settings(e)"/>
-        <Message v-if="showMes" :message="message"/>
+        <!-- <Message v-if="showMes" :message="message"/> -->
     </div>
 </template>
 
 <script>
 import Loading from '../components/Loading.vue';
-import Message from '../components/Message.vue';
+// import Message from '../components/Message.vue';
 import SettingsRk7 from '../components/SettingsRk7.vue';
 import SettingsLogs from '../components/SettingsLogs.vue';
 import SettingsServer from '../components/SettingsServer.vue';
@@ -26,13 +26,13 @@ export default{
         connection: {},
         logs: {},
         server: {},
-        message: "блаблабла",
-        showMes: false,
+        // message: "блаблабла",
+        // showMes: false,
         showList: true
     }),
     components:{
         Loading,
-        Message,
+        // Message,
         SettingsRk7,
         SettingsLogs,
         SettingsServer,
@@ -43,42 +43,19 @@ export default{
             this.logs = data.log
             this.server = data.local_serv
         },
-        async send_settings(data){
-            try{
-                this.showMes = false
-                const response = await fetch("/config/",{
-                    method: "post",
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                })
-
-                if(response.status!=200) throw new Error('Responce statuse: '+response.statusText)
-                this.message = 'Настойки изменены'
-                this.showMes = true
-            }
-            catch (err){              
-                this.message = err.message
-                this.showMes = true
-            }
+        async send_settings(){
+            await this.$store.dispatch('senfConfig')
             
         }
 
     },
     async mounted(){
         try{
-            const response = await fetch("/config");
-            const data = await response.json();
-            this.loading=false
-            if(response.status!=200) throw new Error(data.error_text)
-            this.get_settings(data)
+            await this.$store.dispatch('getConfig')
+            this.loading = false
         }
         catch (err){
-            this.message = err.message
-            this.showList= false
-            this.showMes = true
+            this.showList = false
         }
         
     }

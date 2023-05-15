@@ -1,7 +1,7 @@
 <template>
   <v-app >
     <component :is="layout" />
-    <Message v-if="showMes" :message="message"/>
+    <Message v-if="$store.state.showMess" :message="$store.state.message"/>
   </v-app>
 </template>
 
@@ -32,21 +32,11 @@ export default {
     },
     async mounted(){
         try{
-          this.showMes = false
-          const response = await fetch("/license");
-          
-          if(response.status!=200) {
-              const mess = await response.text()
-              throw new Error(mess)
-          }
-          const data = await response.json()
-          this.loading = false
-          this.$store.commit('set_licInfo', data)
+            await this.$store.dispatch('getLicenseInfo')
+            this.loading = false
         }
-        catch(err){
-          console.log(err)
-          this.message = err.message
-          this.showMes = true
+        catch (err){
+            this.loading = true
         }
     }
     
