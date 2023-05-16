@@ -1,10 +1,10 @@
 <template>
     <div>
-        <Settings :title="'sad'" :listParams="$store.getters.getListSettings[0]"/>
-        <!-- <Settings v-for="(item, idx) in $store.state.config"
+        <!-- <Settings :title="'sad'" :listParams="$store.getters.getListSettings[0]"/> -->
+        <Settings v-for="(item, idx) in $store.getters.getListSettings"
         :key="idx"
         :title="item.title"
-        :listParams="item.settings"/> -->
+        :listParams="item.settings"/>
     </div>
 </template>
 
@@ -25,8 +25,8 @@ export default{
 
     },
     async mounted(){
-        await this.$store.dispatch('getConfig')
-        console.log(this.$store.getters.getListSettings)
+        await this.$store.dispatch('fetchConfig')
+        // console.log(this.$store.getters.getListSettings[0])
     }
 }
 </script>

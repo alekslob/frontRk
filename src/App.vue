@@ -1,7 +1,7 @@
 <template>
   <v-app >
     <component :is="layout" />
-    <Message v-if="$store.getters.getViewMessage" :message="$store.getters.getMessage"/>
+    <Message v-if="$store.getters.getViewMessage" :message="$store.getters.getMessage" :time="$store.getters.getTime"/>
   </v-app>
 </template>
 
@@ -16,8 +16,6 @@ export default {
     name: "App",
     data: () => ({
       loading: true,
-      // message: '',
-      // showMes: false
     }),
     components:{
       LoadLayout,
@@ -34,7 +32,6 @@ export default {
     async mounted(){
         try{
             await this.$store.dispatch('getLicenseInfo')
-            console.log(this.$store.getters.getLicenseValid)
             this.loading = false
         }
         catch (err){
@@ -47,21 +44,5 @@ export default {
 </script>
 
 <style>
-.main{
-  display: flex;
-  justify-content: center;
-}
-.load{
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
-  /* height: 100%; */
-}
-.no-lic{
-  background:gainsboro;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
+
 </style>

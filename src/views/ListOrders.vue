@@ -1,18 +1,20 @@
 <template>
-    <div v-if="loading" class="load">
+    <div>
+        <Order  v-for="(ord,idx) in $store.getters.getListOrders" :key="idx" :order="ord" />
+    </div>
+    <!-- <div v-if="loading" class="load">
         <Loading />
     </div>
     <div v-else>
         <div v-if="showList" class="d-flex flex-wrap bg-surface-variant" >
-            <Order  v-for="(ord,idx) in orders" :key="idx" :order="ord" />
+            <Order  v-for="(ord,idx) in $store.getters.getListOrders" :key="idx" :order="ord" />
         </div>
-        <Message v-if="showMes" :message="message"/>
-    </div>
+    </div> -->
 </template>
 
 <script>
-import Loading from '../components/Loading.vue';
-import Message from '../components/Message.vue';
+// import Loading from '../components/Loading.vue';
+// import Message from '../components/Message.vue';
 import Order from '../components/Order.vue';
 export default{
     name:'ListOrders',
@@ -24,8 +26,8 @@ export default{
         orders:[]
     }),
     components:{
-        Loading,
-        Message,
+        // Loading,
+        // Message,
         Order
     },
     methods:{
@@ -42,20 +44,21 @@ export default{
         }
     },
     async mounted(){
-        try{
-            const response = await fetch("/order_list");
-            const data = await response.json();
-            this.loading=false
-            if(response.status!=200) throw new Error(data.error_text)
-            this.get_list(data)
+        await this.$store.dispatch('fetchListOrders')
+        // try{
+        //     const response = await fetch("/order_list");
+        //     const data = await response.json();
+        //     this.loading=false
+        //     if(response.status!=200) throw new Error(data.error_text)
+        //     this.get_list(data)
             
             
-        }
-        catch (err){
-            this.message = err.message
-            this.showList= false
-            this.showMes = true
-        }
+        // }
+        // catch (err){
+        //     this.message = err.message
+        //     this.showList= false
+        //     this.showMes = true
+        // }
     }
 }
 </script>

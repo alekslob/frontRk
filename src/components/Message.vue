@@ -1,7 +1,7 @@
 <template>
     <v-snackbar
-        v-model="showMes"
-        :timeout="2000"
+        v-model="view"
+        :timeout="time"
         attach
         position="absolute"
         top
@@ -14,15 +14,18 @@
 <script>
 export default{
     data:()=>({
-        showMes: false
+        view: false,
     }),
     props:{
         message:{
             default: ''
+        },
+        time:{
+            default: 0
         }
     },
     mounted(){
-        this.showMes=true
+        this.view=true
     }
 }
 </script>

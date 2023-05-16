@@ -14,7 +14,6 @@
 <script>
 export default{
     data:()=>({
-        // date: this.$store.state.licInfo.expire_date
     })
 }
 </script>
