@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="height: 100%">
     <v-app-bar v-if="$store.getters.getLicenseViewConfig" elevation="6" app>
         <v-spacer></v-spacer>
         <router-link to="/">
@@ -20,7 +20,7 @@
             </router-link>
         <v-spacer></v-spacer>
     </v-app-bar>
-    <v-main class="ma-auto"> 
+    <v-main style="height: 100%"> 
       <router-view />
     </v-main>
 </div>

@@ -1,7 +1,5 @@
 <template>
-    <v-card
-    class="ma-2 pa-2"
-        max-width="344"
+    <v-card   
     >
         <v-card-title>
             Заказ №{{ order.nOrder }}

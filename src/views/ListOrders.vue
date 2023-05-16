@@ -1,20 +1,14 @@
 <template>
-    <div>
-        <Order  v-for="(ord,idx) in $store.getters.getListOrders" :key="idx" :order="ord" />
-    </div>
-    <!-- <div v-if="loading" class="load">
+    <v-container v-if="loading" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;" >
         <Loading />
-    </div>
-    <div v-else>
-        <div v-if="showList" class="d-flex flex-wrap bg-surface-variant" >
-            <Order  v-for="(ord,idx) in $store.getters.getListOrders" :key="idx" :order="ord" />
-        </div>
-    </div> -->
+    </v-container>
+    <v-container v-else style="display: flex; gap: 1em;">
+        <Order  v-for="(ord,idx) in $store.getters.getListOrders" :key="idx" :order="ord" />
+    </v-container>
 </template>
 
 <script>
-// import Loading from '../components/Loading.vue';
-// import Message from '../components/Message.vue';
+import Loading from '../components/Loading.vue';
 import Order from '../components/Order.vue';
 export default{
     name:'ListOrders',
@@ -26,8 +20,7 @@ export default{
         orders:[]
     }),
     components:{
-        // Loading,
-        // Message,
+        Loading,
         Order
     },
     methods:{
@@ -44,21 +37,13 @@ export default{
         }
     },
     async mounted(){
-        await this.$store.dispatch('fetchListOrders')
-        // try{
-        //     const response = await fetch("/order_list");
-        //     const data = await response.json();
-        //     this.loading=false
-        //     if(response.status!=200) throw new Error(data.error_text)
-        //     this.get_list(data)
-            
-            
-        // }
-        // catch (err){
-        //     this.message = err.message
-        //     this.showList= false
-        //     this.showMes = true
-        // }
+        try{
+            await this.$store.dispatch('fetchListOrders')
+            this.loading = false
+        }
+        catch(err){
+            this.loading = true
+        }
     }
 }
 </script>
