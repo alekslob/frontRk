@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card width="500" >
         <v-toolbar flat>
             <v-btn
                 icon

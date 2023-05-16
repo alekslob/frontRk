@@ -14,27 +14,10 @@ export default{
     name:'ListOrders',
     data:()=>({
         loading: true,
-        showMes: false,
-        showList: true,
-        message: '',
-        orders:[]
     }),
     components:{
         Loading,
         Order
-    },
-    methods:{
-        get_list(data){
-            var i = 1
-            data.forEach(e => {
-                const d = {nOrder: i, 
-                    table:e.table.name,
-                    sum: e.unpaid_sum
-                }
-                this.orders.push(d)
-                i++
-            });
-        }
     },
     async mounted(){
         try{
