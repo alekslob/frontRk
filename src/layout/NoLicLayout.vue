@@ -1,11 +1,11 @@
 <template>
-  <NoLicense/>
+  <NoLicView />
 
 </template>
 
 <script>
 
-import NoLicense from '../components/NoLicense.vue';
+import NoLicView from '../views/NoLicView.vue';
 
 
 export default {
@@ -15,7 +15,7 @@ export default {
     }),
     components: { 
 
-      NoLicense,
+      NoLicView,
 
     },
     

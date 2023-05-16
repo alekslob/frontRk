@@ -26,7 +26,7 @@ export default{
     mutations:{
         updateLicenseInfo(state, licenseInfo){
             state.date = licenseInfo.expire_date
-            state.isValid = false//licenseInfo.valid
+            state.isValid = licenseInfo.valid
             state.viewConfig = licenseInfo.features.find(e => e.id==1) != undefined
             state.changeConfig = licenseInfo.features.find(e => e.id==1) != undefined
         }
