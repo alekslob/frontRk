@@ -9,24 +9,27 @@
 
 import Message from './components/Message.vue';
 import NoLicLayout from './layout/NoLicLayout.vue';
-import MainLayout from './layout/MainLayout.vue'
+import MainLayout from './layout/MainLayout.vue';
+import LoginLayout from './layout/LoginLayout.vue';
 import LoadLayout from './layout/LoadLayout.vue';
 
 export default {
     name: "App",
     data: () => ({
       loading: true,
+      login: false
     }),
     components:{
       LoadLayout,
       Message,
       NoLicLayout,
-      MainLayout
+      MainLayout,
+      LoginLayout
     },
     computed:{
         layout() {
           
-          return this.loading ? 'LoadLayout' : this.$store.getters.getLicenseValid ? 'MainLayout': 'NoLicLayout'
+          return this.loading ? 'LoadLayout' : !this.$store.getters.getLicenseValid ? 'NoLicLayout': this.$store.getters.getLogin ? 'MainLayout':'LoginLayout'
         }
     },
     async mounted(){

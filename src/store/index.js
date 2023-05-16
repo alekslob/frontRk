@@ -4,6 +4,7 @@ import message from './message'
 import license from './license'
 import config from './config'
 import orders from './orders'
+import login from './login'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
         message,
         license,
         config,
-        orders
+        orders,
+        login
     }
 })

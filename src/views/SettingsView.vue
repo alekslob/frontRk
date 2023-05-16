@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Settings from '../components/Settings.vue';
+import Settings from '../components/Settings'
 import Loading from '../components/Loading.vue';
 
 export default{
@@ -38,8 +38,6 @@ export default{
         catch(err){
             this.loading = true
         }
-        
-        // console.log(this.$store.getters.getListSettings[0])
     }
 }
 </script>

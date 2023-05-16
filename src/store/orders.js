@@ -4,7 +4,6 @@ export default{
     },
     mutations:{
         updateListOrders(state, listOrders){
-            console.log(listOrders)
             state.listOrders = []
             var i = 1
             listOrders.forEach(e => {
@@ -15,7 +14,6 @@ export default{
                 state.listOrders.push(d)
                 i++
             });
-            console.log(state.listOrders)
         }
     },
     actions:{

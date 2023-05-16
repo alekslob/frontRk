@@ -2,10 +2,10 @@
 export default {
     state: {
         hostRules: [
-            (v) => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(v) || 'блаблабла',
+            (v) => /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(v) || '',
         ],
         portRules: [
-            v => (v && v <= 65000) || '-----',
+            v => (v && v <= 65000) || '',
         ],
         userRules: [
             v => (v && v.length <= 60) || '',
@@ -32,37 +32,37 @@ export default {
         },
         updateConnection(state, connection){
             state.connection = {
-                host: connection.settings[0].value,
-                port: connection.settings[1].value,
-                user: connection.settings[2].value,
-                password: connection.settings[3].value,
+                host: connection[0].value,
+                port: connection[1].value,
+                user: connection[2].value,
+                password: connection[3].value,
             }
         },
         updateLog(state, log){
             state.log = {
-                level: log.settings[0].value,
-                retention_days: log.settings[1].value,
+                level: log[0].value,
+                retention_days: log[1].value,
             }
         },
         updateServer(state, server){
             state.server = {
-                host: server.settings[0].value,
-                port: server.settings[1].value
+                host: server[0].value,
+                port: server[1].value
             }
         }
     },
     actions:{
         async saveConfig(state){
-            if(await state.dispatch('checkConfig', state.getters.getConnection))
-                state.commit('updateConnection', state.getters.getConnection)
+            if(await state.dispatch('checkConfig', state.getters.getConnection)){
+                state.commit('updateConnection', state.getters.getConnection)}
             if(await state.dispatch('checkConfig', state.getters.getLog))
                 state.commit('updateLog', state.getters.getLog)
             if(await state.dispatch('checkConfig', state.getters.getServer))
                 state.commit('updateServer', state.getters.getServer)
+            console.log(state.getters.getConfig)
         },
         checkConfig(_, params){
             for(var i =0; i<params.length; i++){
-                console.log(params[i])
                 if (params[i].rules[0](params[i].value)!=true)
                     return false
             }
@@ -85,7 +85,7 @@ export default {
         },
         async sendConfig(state){
             try{
-                
+                console.log('sendConfig', state.getters.getConfig)
                 const response = await fetch("/config/",{
                     method: "post",
                     headers: {
@@ -104,13 +104,13 @@ export default {
     },
     getters:{
         getConnection(state){
-            return state.listSettings[0]
+            return state.listSettings[0].settings
         },
         getLog(state){
-            return state.listSettings[1]
+            return state.listSettings[1].settings
         },
         getServer(state){
-            return state.listSettings[2]
+            return state.listSettings[2].settings
         },
         getConfig(state){
             return {
@@ -124,7 +124,8 @@ export default {
                 {title: "Подключение к rk7", settings:[
                     {name:"Адрес",
                     value:state.connection.host,
-                    rules:state.hostRules
+                    rules:state.hostRules,
+                    hint: 'Настройки применятся после перезагрузки сервера'
                     },
                     {name:"Порт",
                     value:state.connection.port,
@@ -152,11 +153,13 @@ export default {
                 {title: "Подключение к серверу", settings:[
                     {name:"Адрес",
                     value:state.server.host,
-                    rules: state.hostRules
+                    rules: state.hostRules,
+                    hint: 'Настройки применятся после перезагрузки сервера'
                     },
                     {name:"Порт",
                     value:state.server.port,
-                    rules: state.portRules
+                    rules: state.portRules,
+                    hint: 'Настройки применятся после перезагрузки сервера'
                     },
                 ]}
             ]
