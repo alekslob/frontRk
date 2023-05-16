@@ -2,7 +2,7 @@
     <div style="height: 100%">
     <v-app-bar v-if="$store.getters.getLicenseViewConfig" elevation="6" app>
         <v-spacer></v-spacer>
-        <router-link to="/">
+        <router-link to="/orders">
           <v-btn class="mx-2"
             x-large
             dark
