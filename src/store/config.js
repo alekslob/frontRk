@@ -52,13 +52,25 @@ export default {
         }
     },
     actions:{
-        async saveConfig(state){
-            if(await state.dispatch('checkConfig', state.getters.getConnection)){
-                state.commit('updateConnection', state.getters.getConnection)}
-            if(await state.dispatch('checkConfig', state.getters.getLog))
-                state.commit('updateLog', state.getters.getLog)
-            if(await state.dispatch('checkConfig', state.getters.getServer))
-                state.commit('updateServer', state.getters.getServer)
+        async saveConfig(state, id){
+            switch(id) {
+                case 0:
+                    await state.commit('updateConnection', state.getters.getConnection)
+                    break
+                case 1:
+                    await state.commit('updateLog', state.getters.getLog)
+                    break
+                case 2:
+                    await state.commit('updateServer', state.getters.getServer)
+                    break 
+            }
+
+            // if(await state.dispatch('checkConfig', state.getters.getConnection)){
+            //     await state.commit('updateConnection', state.getters.getConnection)}
+            // if(await state.dispatch('checkConfig', state.getters.getLog))
+            //     await state.commit('updateLog', state.getters.getLog)
+            // if(await state.dispatch('checkConfig', state.getters.getServer))
+            //     await state.commit('updateServer', state.getters.getServer)
             console.log(state.getters.getConfig)
         },
         checkConfig(_, params){

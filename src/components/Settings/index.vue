@@ -56,6 +56,9 @@ export default{
         },
         listParams:{
             default: {}
+        },
+        id:{
+            default: -1
         }
     },
     components:{
@@ -65,7 +68,7 @@ export default{
         async save(){
             if (await this.$store.dispatch('checkConfig', this.listParams)){
                 this.isEditing=!this.isEditing
-                await this.$store.dispatch('saveConfig')
+                await this.$store.dispatch('saveConfig', this.id)
 
                 await this.$store.dispatch('sendConfig')
             }

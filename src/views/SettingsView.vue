@@ -5,6 +5,7 @@
     <v-container v-else style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <Settings v-for="(item, idx) in $store.getters.getListSettings"
         :key="idx"
+        :id="idx"
         :title="item.title"
         :listParams="item.settings"
         />

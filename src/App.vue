@@ -19,7 +19,7 @@ export default {
       loading: true,
       login: false
     }),
-    components:{
+    components:{  
       LoadLayout,
       Message,
       NoLicLayout,
@@ -29,7 +29,8 @@ export default {
     computed:{
         layout() {
           
-          return this.loading ? 'LoadLayout' : !this.$store.getters.getLicenseValid ? 'NoLicLayout': this.$store.getters.getLogin ? 'MainLayout':'LoginLayout'
+          // return this.loading ? 'LoadLayout' : !this.$store.getters.getLicenseValid ? 'NoLicLayout': this.$store.getters.getLogin ? 'MainLayout':'LoginLayout'
+          return this.loading ? 'LoadLayout' : this.$store.getters.getLicenseValid ? this.$store.getters.getLogin ? 'MainLayout':'LoginLayout':'NoLicLayout'
         }
     },
     async mounted(){
