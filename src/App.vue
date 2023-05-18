@@ -2,7 +2,7 @@
   <v-app >
     <component :is="layout" />
     <Message v-if="$store.getters.getViewMessage" :message="$store.getters.getMessage" :time="$store.getters.getTime"/>
-  </v-app>
+</v-app>
 </template>
 
 <script>

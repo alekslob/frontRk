@@ -69,7 +69,6 @@ export default{
             if (await this.$store.dispatch('checkConfig', this.listParams)){
                 this.isEditing=!this.isEditing
                 await this.$store.dispatch('saveConfig', this.id)
-
                 await this.$store.dispatch('sendConfig')
             }
         }

@@ -64,13 +64,6 @@ export default {
                     await state.commit('updateServer', state.getters.getServer)
                     break 
             }
-
-            // if(await state.dispatch('checkConfig', state.getters.getConnection)){
-            //     await state.commit('updateConnection', state.getters.getConnection)}
-            // if(await state.dispatch('checkConfig', state.getters.getLog))
-            //     await state.commit('updateLog', state.getters.getLog)
-            // if(await state.dispatch('checkConfig', state.getters.getServer))
-            //     await state.commit('updateServer', state.getters.getServer)
             console.log(state.getters.getConfig)
         },
         checkConfig(_, params){
